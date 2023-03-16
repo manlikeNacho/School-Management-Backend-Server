@@ -10,7 +10,7 @@ type Course struct {
 	Students []Student `json:"students" gorm:"many2many:student_courses"`
 }
 
-type courseResponse struct {
+type CourseResponse struct {
 	ID          uint   `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`

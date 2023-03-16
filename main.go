@@ -1,7 +1,7 @@
 package main
 
 import (
-	"TheAdmin/src/router"
+	"TheAdmin/src/controller"
 	"TheAdmin/src/setup"
 	"github.com/gin-gonic/gin"
 )
@@ -14,10 +14,12 @@ func main() {
 			"message": "welcome to deez administration",
 		})
 	})
-	r.POST("/createStudent", router.CreateStudent)
-	r.GET("/getStudentById/:id", router.GetStudentById)
-	r.GET("/listStudents", router.ListStudents)
-	r.PUT("/updateStudentById/:id", router.DeleteStudent)
-	r.DELETE("/deleteStudentById/:id", router.DeleteStudent)
+	r.POST("/student", controller.CreateStudent)
+	r.GET("/student/:id", controller.GetStudentById)
+	r.PUT("/student/:id", controller.UpdateStudent)
+	r.DELETE("student/:id", controller.DeleteStudent)
+	r.GET("/list/student", controller.ListStudents)
+	r.GET("/list/course", controller.ListCourses)
+	r.GET("/list/student/:course_name", controller.ListStudentsByCourse)
 	r.Run()
 }
