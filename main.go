@@ -21,5 +21,6 @@ func main() {
 	r.GET("/list/student", controller.ListStudents)
 	r.GET("/list/course", controller.ListCourses)
 	r.GET("/list/student/:course_name", controller.ListStudentsByCourse)
+	r.PUT("/course/:id/student", controller.UpdateStudentCourseById)
 	r.Run()
 }

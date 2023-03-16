@@ -15,3 +15,7 @@ type CourseResponse struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 }
+
+type UpdateCoursesRequest struct {
+	CourseIds []int `json:"course_ids" binding:"required"`
+}

@@ -30,12 +30,13 @@ func CreateStudent(c *gin.Context) {
 
 func GetStudentById(c *gin.Context) {
 	id := c.Param("id")
+
 	var student models.Student
-	result := setup.DB.First(&student, id)
-	if result.Error != nil {
-		c.AbortWithStatus(http.StatusNotFound)
+	if err := setup.DB.Where("id = ?", id).Preload("CoursesTaken").First(&student).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid student ID"})
 		return
 	}
+
 	c.JSON(http.StatusOK, student)
 }
 
@@ -119,4 +120,34 @@ func ListStudentsByCourse(c *gin.Context) {
 	setup.DB.Table("students").Joins("JOIN student_courses ON student_courses.student_id = students.id").Joins("JOIN courses ON student_courses.course_id = courses.id").Where("courses.title = ?", courseName).Pluck("students.name", &students)
 
 	c.JSON(http.StatusOK, gin.H{"students": students})
+}
+
+func UpdateStudentCourseById(c *gin.Context) {
+	studentID := c.Param("id")
+	var req models.UpdateCoursesRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var student models.Student
+	if err := setup.DB.Where("id = ?", studentID).Preload("CoursesTaken").First(&student).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid student ID"})
+		return
+	}
+
+	var courses []models.Course
+	if err2 := setup.DB.Where("id IN (?)", req.CourseIds).Find(&courses).Error; err2 != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "No course models"})
+	}
+
+	if student.CoursesTaken == nil {
+		student.CoursesTaken = []models.Course{}
+	}
+
+	student.CoursesTaken = courses
+	if err := setup.DB.Save(&student).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "courses updated successfully"})
 }
