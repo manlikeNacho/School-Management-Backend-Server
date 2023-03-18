@@ -11,7 +11,7 @@ var DB *gorm.DB
 
 func Connection() {
 	var err error
-	dsn := "root:secret@tcp(127.0.0.1:3306)/testdb?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:secret@tcp(mysql:3306)/altschdb?charset=utf8mb4&parseTime=True&loc=Local"
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	err2 := DB.AutoMigrate(&models.Student{}, &models.Course{})

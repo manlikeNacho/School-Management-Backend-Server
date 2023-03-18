@@ -1,0 +1,4 @@
+mysql/
+mysql-files/
+.sock
+.env

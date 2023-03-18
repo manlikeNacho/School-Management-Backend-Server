@@ -1,0 +1,196 @@
+basePath: /api/v1
+definitions:
+  models.CourseResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    type: object
+  models.StudentResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: eiheanacho52@gmail.com
+    name: Iheanacho Emmanuel
+    url: github.com/manlikeNacho
+  description: This is a sample server School admin server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Alt-School Adminstration
+  version: "1.0"
+paths:
+  /course/:id/student:
+    put:
+      consumes:
+      - application/json
+      description: create student account
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StudentResponse'
+      summary: Create Student Account
+      tags:
+      - Student
+  /list/course:
+    get:
+      consumes:
+      - application/json
+      description: List courses total courses taken by all students
+      parameters:
+      - description: Student ID
+        in: path
+        name: course_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CourseResponse'
+      summary: List courses
+      tags:
+      - Student
+  /list/student:
+    get:
+      consumes:
+      - application/json
+      description: List total students in the db
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.StudentResponse'
+            type: array
+      summary: List Students
+      tags:
+      - Student
+  /list/student/:course_name:
+    get:
+      consumes:
+      - application/json
+      description: create student account
+      parameters:
+      - description: Student ID
+        in: path
+        name: course_name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: string
+            type: array
+      summary: Create Student Account
+      tags:
+      - Student
+  /student:
+    post:
+      consumes:
+      - application/json
+      description: create student account
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StudentResponse'
+      summary: Create Student Account
+      tags:
+      - Student
+  /student/:id:
+    delete:
+      consumes:
+      - application/json
+      description: Delete student account
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StudentResponse'
+      summary: Delete Student Account
+      tags:
+      - Student
+    get:
+      consumes:
+      - application/json
+      description: get student by Id
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StudentResponse'
+      summary: Get Student
+      tags:
+      - Student
+    put:
+      consumes:
+      - application/json
+      description: Update student Name/email
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.StudentResponse'
+      summary: Update Student account
+      tags:
+      - Student
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
